@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-seeding
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql-container
+        image: nyuappsec/assign3-db:v0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: admin-login-secrets
+              key: password
+        command: ["/bin/bash"]
+        args:
+          - "-c"
+          - |
+            echo 'Running setup script...'
+            mysql -u root -p${MYSQL_ROOT_PASSWORD} -D GiftcardSiteDB -h mysql-service < /docker-entrypoint-initdb.d/setup.sql
+            echo 'Finished running setup script'
+      restartPolicy: Never
+  backoffLimit: 4

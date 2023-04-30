@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+
+  name: mysql-migration-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql-migration-job
+        image: nyuappsec/assign3-db-migrations:v0
+        resources: {}
+        volumeMounts:
+          - name: mysql-volume-mount
+            mountPath: /var/lib/mysql
+      restartPolicy: OnFailure
+      volumes:
+        - name: mysql-volume-mount
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+
+status: {}

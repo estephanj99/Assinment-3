@@ -1,0 +1,2 @@
+wrote a db seed and db migration yaml file and also 
+added a  mysql -u root -ppassword -h host < setup.sql to seed the data and added a mount point
